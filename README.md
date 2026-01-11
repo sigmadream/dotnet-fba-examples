@@ -19,21 +19,50 @@ File-Based Application(FBA)은 .NET의 혁신적인 기능으로, 단일 C# 파�
 
 ## 📋 목차
 
-- [FBA란 무엇인가요?](#-fba란-무엇인가요)
-- [요구사항](#-요구사항)
-- [빠른 시작](#-빠른-시작)
-- [예제 설명](#-예제-설명)
-  - [01. Shell Scripts](#01-shell-scripts)
-  - [02. Web API](#02-web-api)
-  - [03. Aspire App Host](#03-aspire-app-host)
-  - [04. Avalonia GUI](#04-avalonia-gui)
-  - [05. Native AOT](#05-native-aot)
-  - [06. AG-UI (AI Agents)](#06-ag-ui-ai-agents)
-- [FBA 디렉티브 가이드](#-fba-디렉티브-가이드)
-- [문제 해결](#-문제-해결)
-- [기여하기](#-기여하기)
-- [라이선스](#-라이선스)
-- [참고 자료](#-참고-자료)
+- [C# File-Based Application (FBA) Zero to Hero](#c-file-based-application-fba-zero-to-hero)
+  - [🎯 FBA란 무엇인가요?](#-fba란-무엇인가요)
+  - [📋 목차](#-목차)
+  - [💻 요구사항](#-요구사항)
+    - [필수 요구사항](#필수-요구사항)
+    - [선택적 요구사항](#선택적-요구사항)
+    - [개발 도구 (권장)](#개발-도구-권장)
+  - [🚀 빠른 시작](#-빠른-시작)
+  - [📚 예제 설명](#-예제-설명)
+    - [01. Shell Scripts](#01-shell-scripts)
+      - [`01-shell-standard.cs`](#01-shell-standardcs)
+      - [`01-shell-alt.cs`](#01-shell-altcs)
+    - [02. Web API](#02-web-api)
+      - [`02-random-webapi.cs`](#02-random-webapics)
+    - [03. Aspire App Host](#03-aspire-app-host)
+      - [구성 요소](#구성-요소)
+    - [04. Avalonia GUI](#04-avalonia-gui)
+      - [`04-avalonia.cs`](#04-avaloniacs)
+    - [05. Native AOT](#05-native-aot)
+      - [예제 파일](#예제-파일)
+      - [동적 라이브러리 (.dylib) 예제](#동적-라이브러리-dylib-예제)
+      - [정적 라이브러리 (.a) 예제](#정적-라이브러리-a-예제)
+    - [06. AG-UI (AI Agents)](#06-ag-ui-ai-agents)
+    - [07. Blazor WebAssembly](#07-blazor-webassembly)
+      - [구성 요소](#구성-요소-1)
+      - [프로젝트 구조](#프로젝트-구조)
+  - [📖 FBA 디렉티브 가이드](#-fba-디렉티브-가이드)
+    - [SDK 지정](#sdk-지정)
+    - [패키지 참조](#패키지-참조)
+    - [빌드 속성](#빌드-속성)
+    - [Shebang 스타일](#shebang-스타일)
+  - [🔧 문제 해결](#-문제-해결)
+    - [실행 권한 오류](#실행-권한-오류)
+    - [패키지 복원 오류](#패키지-복원-오류)
+    - [Native AOT 빌드 실패](#native-aot-빌드-실패)
+    - [Aspire Dashboard 접근 불가](#aspire-dashboard-접근-불가)
+    - [OpenRouter API 키 오류](#openrouter-api-키-오류)
+  - [🤝 기여하기](#-기여하기)
+  - [📄 라이선스](#-라이선스)
+  - [🔗 참고 자료](#-참고-자료)
+    - [공식 문서](#공식-문서)
+    - [프레임워크 및 도구](#프레임워크-및-도구)
+    - [커뮤니티](#커뮤니티)
+    - [관련 프로젝트](#관련-프로젝트)
 
 ## 💻 요구사항
 
@@ -482,6 +511,120 @@ User (:q or quit to exit): :q
 
 ---
 
+### 07. Blazor WebAssembly
+
+> 🎓 **학습 목표**: FBA에서 Blazor WebAssembly 애플리케이션 작성, 클라이언트 사이드 SPA 구축
+
+Blazor WebAssembly를 사용한 클라이언트 사이드 단일 페이지 애플리케이션(SPA) 예제입니다. 브라우저에서 직접 실행되는 .NET 기반 웹 애플리케이션을 FBA 형태로 작성하는 방법을 보여줍니다.
+
+**핵심 개념:**
+
+- `#:sdk Microsoft.NET.Sdk.BlazorWebAssembly` - Blazor WebAssembly SDK 사용
+- `#:property OverrideHtmlAssetPlaceholders=true` - HTML 자산 플레이스홀더 재정의
+- `#:property RootNamespace=app` - 루트 네임스페이스 지정
+- Razor 컴포넌트 기반 UI 구성
+- 라우팅 및 레이아웃 시스템
+- HttpClient를 통한 데이터 페칭
+- MD2RazorGenerator를 활용한 Markdown 페이지 지원
+
+#### 구성 요소
+
+- **`07-blazor-wasm/app.cs`**: 애플리케이션 진입점 - WebAssemblyHostBuilder 설정
+- **`07-blazor-wasm/App.razor`**: 루트 컴포넌트 - 라우터 구성
+- **`07-blazor-wasm/_Imports.razor`**: 전역 using 선언
+- **`07-blazor-wasm/Layout/`**: 레이아웃 컴포넌트 (MainLayout, NavMenu)
+- **`07-blazor-wasm/Pages/`**: 페이지 컴포넌트 (Home, Counter, Weather)
+- **`07-blazor-wasm/wwwroot/`**: 정적 자산 (CSS, 샘플 데이터)
+
+#### 프로젝트 구조
+
+```text
+07-blazor-wasm/
+├── app.cs                 # 진입점 (FBA 메인 파일)
+├── App.razor              # 루트 컴포넌트
+├── _Imports.razor         # 전역 using
+├── Layout/
+│   ├── MainLayout.razor   # 메인 레이아웃
+│   └── NavMenu.razor      # 네비게이션 메뉴
+├── Pages/
+│   ├── Home.md            # 홈 페이지 (Markdown)
+│   ├── Counter.razor      # 카운터 예제
+│   ├── Weather.razor      # 날씨 데이터 페칭 예제
+│   └── NotFound.razor     # 404 페이지
+└── wwwroot/
+    ├── index.html         # HTML 호스트 페이지
+    ├── css/               # 스타일시트
+    └── sample-data/       # JSON 샘플 데이터
+```
+
+**실행 방법:**
+
+```bash
+# 07-blazor-wasm 폴더로 이동
+cd 07-blazor-wasm
+
+# 실행 (--no-cache 옵션 필수)
+dotnet run --no-cache app.cs
+```
+
+> ⚠️ **중요**: Blazor WebAssembly FBA는 여러 Razor 파일과 정적 자산을 포함하므로, 변경 사항이 올바르게 반영되려면 반드시 `--no-cache` 옵션을 사용해야 합니다. 이 옵션 없이 실행하면 이전 캐시된 빌드가 사용되어 최신 변경 사항이 적용되지 않을 수 있습니다.
+
+**특징:**
+
+- 브라우저에서 직접 실행되는 .NET 코드 (WebAssembly)
+- 서버 없이 정적 호스팅 가능 (GitHub Pages, Azure Static Web Apps 등)
+- Bootstrap 기반 반응형 UI
+- Markdown 파일을 페이지로 변환 (MD2RazorGenerator)
+- 클라이언트 사이드 라우팅
+- HttpClient를 통한 JSON 데이터 로딩
+
+**페이지 설명:**
+
+| 페이지 | 경로 | 설명 |
+|--------|------|------|
+| Home | `/`, `/home` | Markdown으로 작성된 홈 페이지 |
+| Counter | `/counter` | 버튼 클릭 카운터 예제 |
+| Weather | `/weather` | JSON 파일에서 날씨 데이터 로딩 |
+
+**네임스페이스 변경 시 주의사항:**
+
+네임스페이스를 변경하려면 다음 파일들을 함께 수정해야 합니다:
+
+1. `app.cs`: using 문의 네임스페이스
+2. `_Imports.razor`: @using 지시문의 네임스페이스
+3. `wwwroot/index.html`: `<namespace>.styles.css` 참조
+
+변경 후 반드시 `dotnet run --no-cache app.cs`로 실행하세요.
+
+**아키텍처:**
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│                      Browser                            │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │              Blazor WebAssembly App               │  │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────────────┐   │  │
+│  │  │ Router  │──│ Layout  │──│     Pages       │   │  │
+│  │  └─────────┘  └─────────┘  │ - Home.md       │   │  │
+│  │       │            │       │ - Counter.razor │   │  │
+│  │       │            │       │ - Weather.razor │   │  │
+│  │       ▼            ▼       └─────────────────┘   │  │
+│  │  ┌─────────────────────────────┐                 │  │
+│  │  │     .NET WebAssembly        │                 │  │
+│  │  │   (dotnet.native.wasm)      │                 │  │
+│  │  └─────────────────────────────┘                 │  │
+│  └───────────────────────────────────────────────────┘  │
+│                         │                               │
+│                         ▼                               │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │              wwwroot (Static Assets)              │  │
+│  │         index.html, CSS, sample-data/             │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 📖 FBA 디렉티브 가이드
 
 FBA에서 사용 가능한 주요 디렉티브들입니다:
@@ -492,6 +635,7 @@ FBA에서 사용 가능한 주요 디렉티브들입니다:
 #:sdk Microsoft.NET.Sdk           // 기본 콘솔 애플리케이션
 #:sdk Microsoft.NET.Sdk.Web       // 웹 애플리케이션
 #:sdk Microsoft.NET.Sdk.Worker    // Worker 서비스
+#:sdk Microsoft.NET.Sdk.BlazorWebAssembly  // Blazor WebAssembly
 #:sdk Aspire.AppHost.Sdk@13.0.0   // Aspire AppHost (버전 지정)
 ```
 
