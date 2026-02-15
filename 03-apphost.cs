@@ -18,15 +18,32 @@ builder.Configuration
 
 var garnet = builder.AddGarnet("cache");
 
-_ = builder.AddCSharpApp("worker", "03-worker.cs")
-    .WithReference(garnet)
-    .WaitFor(garnet);
+// 인자에 "fsharp"이 있으면 F#(dotnet fsi), 없으면 기본값 C# 실행
+var useFSharp = args.Contains("fsharp");
 
-_ = builder.AddCSharpApp("minapi", "03-minapi.cs")
-    .WithReference(garnet)
-    .WaitFor(garnet)
-    .WithHttpsEndpoint()
-    .WithHttpEndpoint();
+if (useFSharp)
+{
+    _ = builder.AddExecutable("worker", "dotnet", ".", "fsi", "03-worker.fsx")
+        .WithReference(garnet)
+        .WaitFor(garnet);
+
+    _ = builder.AddExecutable("minapi", "dotnet", ".", "fsi", "03-minapi.fsx")
+        .WithReference(garnet)
+        .WaitFor(garnet)
+        .WithHttpEndpoint(targetPort: 9080, env: "PORT");
+}
+else
+{
+    _ = builder.AddCSharpApp("worker", "03-worker.cs")
+        .WithReference(garnet)
+        .WaitFor(garnet);
+
+    _ = builder.AddCSharpApp("minapi", "03-minapi.cs")
+        .WithReference(garnet)
+        .WaitFor(garnet)
+        .WithHttpsEndpoint()
+        .WithHttpEndpoint();
+}
 
 using var app = builder.Build();
 app.Run();
