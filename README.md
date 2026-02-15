@@ -1,8 +1,8 @@
-# C# File-Based Application (FBA) Zero to Hero
+# .Net File-Based Application (FBA) Zero to Hero
 
 > 🚀 .NET의 강력한 FBA(File-Based Application) 기능을 활용한 실전 예제 모음
 
-C# File-Based Application (FBA) 기능을 활용한 다양한 예제 코드 모음입니다. .NET 10 이상의 FBA 기능을 사용하여 단일 파일로 작성된 실행 가능한 C# 스크립트 예제들을 제공합니다.
+.Net File-Based Application (FBA) 기능을 활용한 다양한 예제 코드 모음입니다. .NET 10 이상의 FBA 기능을 사용하여 단일 파일로 작성된 실행 가능한 C# 스크립트 예제들을 제공합니다.
 
 > 발표 자료 같이보기: <https://1drv.ms/p/c/318484c5aad6b73d/EQNehpg4jN5CmVcTh-qDoecBGqBe3gMwuGh3bbHf7EW4yQ?e=M1RstJ>
 
@@ -27,7 +27,7 @@ File-Based Application(FBA)은 .NET의 혁신적인 기능으로, 단일 C# 파�
     - [선택적 요구사항](#선택적-요구사항)
     - [개발 도구 (권장)](#개발-도구-권장)
   - [🚀 빠른 시작](#-빠른-시작)
-  - [📚 예제 설명](#-예제-설명)
+  - [📚 C# 예제 설명](#-c-예제-설명)
     - [01. Shell Scripts](#01-shell-scripts)
       - [`01-shell-standard.cs`](#01-shell-standardcs)
       - [`01-shell-alt.cs`](#01-shell-altcs)
@@ -45,6 +45,15 @@ File-Based Application(FBA)은 .NET의 혁신적인 기능으로, 단일 C# 파�
     - [07. Blazor WebAssembly](#07-blazor-webassembly)
       - [구성 요소](#구성-요소-1)
       - [프로젝트 구조](#프로젝트-구조)
+  - [📚 F# 예제 설명](#-f-예제-설명)
+    - [01. Shell Scripts (F#)](#01-shell-scripts-f)
+      - [`01-shell-standard.fsx`](#01-shell-standardfsx)
+    - [02. Web API (F#)](#02-web-api-f)
+      - [`02-random-webapi.fsx`](#02-random-webapifsx)
+    - [03. Aspire App Host (F#)](#03-aspire-app-host-f)
+      - [구성 요소](#구성-요소)
+    - [04. Avalonia GUI (F#)](#04-avalonia-gui-f)
+      - [`04-avalonia.fsx`](#04-avaloniafsx)
   - [📖 FBA 디렉티브 가이드](#-fba-디렉티브-가이드)
     - [SDK 지정](#sdk-지정)
     - [패키지 참조](#패키지-참조)
@@ -116,7 +125,7 @@ chmod +x 02-random-webapi.cs
 # 다른 터미널에서: curl http://localhost:5000/
 ```
 
-## 📚 예제 설명
+## 📚 C# 예제 설명
 
 각 예제는 FBA의 특정 기능과 실제 사용 사례를 보여줍니다. 난이도 순으로 정렬되어 있으며, 기초부터 고급 주제까지 다룹니다.
 
@@ -622,6 +631,185 @@ dotnet run --no-cache app.cs
 │  └───────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 📚 F# 예제 설명
+
+각 예제는 FBA의 특정 기능과 실제 사용 사례를 보여줍니다. 난이도 순으로 정렬되어 있으며, 기초부터 고급 주제까지 다룹니다.
+
+### 01. Shell Scripts (F#)
+
+> 🎓 **학습 목표**: F# 스크립트(.fsx)의 Shebang 사용법과 `dotnet fsi`로 실행하는 방식 이해
+
+간단한 "Hello World" 스타일의 쉘 스크립트 예제입니다. F# 스크립트(.fsx)를 Unix/Linux 스타일의 실행 가능한 스크립트로 만드는 방법을 보여줍니다.
+
+**핵심 개념:**
+
+- Shebang(`#!`)으로 `dotnet fsi`(F# Interactive) 지정 (`#!/usr/bin/env -S dotnet fsi`)
+- 실행 권한 부여 (`chmod +x`)
+- 직접 실행 가능한 F# 스크립트
+- F# 내장 값: `__SOURCE_FILE__`, `__SOURCE_DIRECTORY__`로 스크립트 경로 활용
+- `printfn`을 이용한 출력
+
+#### `01-shell-standard.fsx`
+
+표준 shebang 방식을 사용한 기본 F# 스크립트입니다.
+
+**실행 방법:**
+
+```bash
+# 실행 권한 부여
+chmod +x 01-shell-standard.fsx
+
+# 실행
+./01-shell-standard.fsx
+```
+
+**출력:**
+
+```text
+No lemon, no melon.
+File: (현재 스크립트 경로)
+Directory: (현재 스크립트 디렉터리)
+```
+
+---
+
+### 02. Web API (F#)
+
+> 🎓 **학습 목표**: F# .fsx 스크립트에서 `#r "nuget: ..."`로 패키지 참조, Suave로 경량 웹 API 작성
+
+F# .fsx에서는 ASP.NET Core의 FrameworkReference를 쓸 수 없으므로, 경량 웹 프레임워크 **Suave**를 사용한 랜덤 숫자 API 예제입니다.
+
+**핵심 개념:**
+
+- `#r "nuget: Suave"`, `#r "nuget: System.Text.Json"` — 스크립트 내 NuGet 참조
+- Suave의 `path`/`choose`/`>=>` 컴포지션으로 라우팅 및 미들웨어
+- F# 익명 레코드(`{| ts = ...; val = ... |}`)로 JSON 응답 모델링
+- `async { ... }` (F# 비동기 워크플로) 활용
+
+#### `02-random-webapi.fsx`
+
+**실행 방법:**
+
+```bash
+# 실행 권한 부여
+chmod +x 02-random-webapi.fsx
+
+# 실행
+./02-random-webapi.fsx
+```
+
+**테스트:**
+
+```bash
+# 다른 터미널에서 실행 (Suave 기본 포트 8080)
+curl http://localhost:8080/
+```
+
+**응답 예시:**
+
+```json
+{
+  "ts": "2025-11-26T12:34:56.7890123Z",
+  "val": 7
+}
+```
+
+---
+
+### 03. Aspire App Host (F#)
+
+> 🎓 **학습 목표**: .NET Aspire로 분산 애플리케이션 구축, C# App Host에서 F# 스크립트(Worker/MinAPI) 오케스트레이션
+
+.NET Aspire를 사용한 분산 애플리케이션 오케스트레이션 예제입니다. **앱 호스트는 C#**(`03-apphost.cs`)이며, Garnet(Redis 호환) 캐시와 함께 **F# 스크립트** Worker·MinAPI를 `AddExecutable`로 기동할 수 있습니다.
+
+**핵심 개념:**
+
+- `03-apphost.cs`: C# FBA — `#:sdk Aspire.AppHost.Sdk`, `#:package`로 Garnet 참조
+- 인자 `fsharp` 여부에 따라 C# 앱 또는 F# 스크립트(`dotnet fsi 03-worker.fsx` / `03-minapi.fsx`) 선택
+- F# 쪽: 환경 변수 `ConnectionStrings__cache`로 Redis 연결, `Async.AwaitTask`·`async { }` 활용
+- `WaitFor` 패턴으로 서비스 시작 순서 제어, User Secrets·Aspire Dashboard
+
+#### 구성 요소
+
+- **`03-apphost.cs`**: 앱 호스트(C#) — 전체 오케스트레이터, `fsharp` 인자 시 F# 스크립트 기동
+- **`03-minapi.fsx`**: F# Suave 웹 API — Redis에서 메시지·LastUpdated 읽어 반환, `PORT`/`ASPNETCORE_URLS`로 포트 설정(기본 9080)
+- **`03-worker.fsx`**: F# Worker — 1초마다 Redis에 LastUpdated 업데이트, 재귀 `async` 루프
+- **`03-apphost.json`**: 앱 호스트 설정 파일
+
+**실행 방법:**
+
+```bash
+# 실행 권한 부여
+chmod +x 03-apphost.cs
+
+# F# 스크립트(Worker + MinAPI)로 실행
+./03-apphost.cs fsharp
+```
+
+**특징:**
+
+- Aspire Dashboard가 자동으로 실행됩니다 (`http://localhost:18888`)
+- Garnet (Redis 호환) 캐시 서버가 자동으로 시작됩니다
+- F# Worker가 1초마다 LastUpdated 키를 업데이트합니다
+- F# MinAPI가 메시지와 마지막 업데이트 시간을 반환합니다 (Suave, 포트 기본 9080)
+
+**테스트:**
+
+```bash
+# F# MinAPI 사용 시 기본 포트 9080
+curl http://localhost:9080/
+```
+
+**아키텍처 흐름:**
+
+```text
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   Worker    │─────>│   Garnet    │<─────│   MinAPI    │
+│(03-worker   │ write│  (Redis)    │ read │(03-minapi   │
+│   .fsx)     │      │             │      │   .fsx)     │
+└─────────────┘      └─────────────┘      └─────────────┘
+      ↓                                           ↓
+  매 1초마다                               HTTP 요청 시
+ LastUpdated 업데이트                    메시지 조회 및 반환
+```
+
+---
+
+### 04. Avalonia GUI (F#)
+
+> 🎓 **학습 목표**: F# .fsx에서 Avalonia.FuncUI로 크로스 플랫폼 GUI 작성, MVU(Elmish) 패턴 적용
+
+Avalonia UI와 **Avalonia.FuncUI**를 사용한 크로스 플랫폼 데스크톱 계산기입니다. F#의 fsx에서는 소스 제너레이터를 쓰기 어려우므로, **MVU(Model-View-Update)** 패턴으로 구현합니다.
+
+**핵심 개념:**
+
+- `#r "nuget: Avalonia"`, `Avalonia.Desktop`, `Avalonia.FuncUI` — 스크립트 내 NuGet 참조
+- **MVU (Elmish)** — `Model` 타입, `Msg` 구별 합 union, `init`/`update`/`view` 함수
+- 패턴 매칭으로 `update` 분기 및 `calculate` 로직 표현
+- Avalonia.FuncUI DSL (`Button.create`, `Grid.create` 등)으로 코드 기반 UI
+- `Component`와 `ctx.useState`로 상태 보관 및 `dispatch`로 메시지 전달
+
+#### `04-avalonia.fsx`
+
+**실행 방법:**
+
+```bash
+# 실행 권한 부여
+chmod +x 04-avalonia.fsx
+
+# 실행
+./04-avalonia.fsx
+```
+
+**특징:**
+
+- Avalonia.FuncUI + MVU 패턴으로 단방향 데이터 흐름과 불변 모델
+- 기본 사칙연산 (+, -, ×, ÷), 한글 오류 메시지(0으로 나누기 등)
+- 크로스 플랫폼 (Windows, macOS, Linux)
+- F# 구별 합 union과 패턴 매칭을 활용한 이벤트 처리
 
 ---
 
