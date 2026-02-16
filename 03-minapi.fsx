@@ -1,6 +1,10 @@
 #!/usr/bin/env -S dotnet fsi
-// F# Minimal API — Suave + StackExchange.Redis. App Host(C#)에서 AddExecutable로 기동.
-// C# 원본(03-minapi.cs)은 ASP.NET Core Minimal API + AddRedisClient; F#은 Suave + env ConnectionStrings__cache.
+// ============================================================================
+// F# Minimal API — Suave + StackExchange.Redis
+// ============================================================================
+// C# 원본(03-minapi.cs)은 ASP.NET Core Minimal API + AddRedisClient
+// F#은 Suave + env ConnectionStrings__cache 사용
+// ============================================================================
 
 #r "nuget: Suave, 2.6.2"
 #r "nuget: StackExchange.Redis, 2.8.16"

@@ -2,9 +2,9 @@
 // ============================================================================
 // F# Web API — Suave 기반 랜덤 숫자 API
 // ============================================================================
-// C# 원본(02-random-webapi.cs)은 ASP.NET Core Minimal API를 사용하지만,
-// F# .fsx 스크립트에서는 ASP.NET Core의 FrameworkReference를 사용할 수 없으므로
-// 경량 웹 프레임워크인 Suave를 사용합니다.
+// C# 원본(02-random-webapi.cs)은 ASP.NET Core Minimal API를 사용
+// F# .fsx 스크립트에서는 ASP.NET Core의 FrameworkReference를 사용할 수 없음
+// 경량 웹 프레임워크인 Suave를 사용
 // ============================================================================
 
 #r "nuget: Suave, 2.6.2"

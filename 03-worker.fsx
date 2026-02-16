@@ -1,6 +1,10 @@
 #!/usr/bin/env -S dotnet fsi
-// F# Worker: App Host(C#)에서 AddExecutable로 기동. Aspire가 주입하는 ConnectionStrings__cache 사용.
-// C# 원본(03-worker.cs)은 BackgroundService + AddRedisClient; F#은 env에서 연결 문자열 읽음.
+// ============================================================================
+// F# Worker — StackExchange.Redis
+// ============================================================================
+// C# 원본(03-worker.cs)은 BackgroundService + AddRedisClient
+// F#은 env ConnectionStrings__cache 사용
+// ============================================================================
 
 #r "nuget: StackExchange.Redis, 2.8.16"
 
